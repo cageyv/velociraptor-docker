@@ -31,10 +31,13 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/cageyv/${{ github.repository }}
+          images: ghcr.io/cageyv/velociraptor
           tags: |
             type=raw,priority=100,value=${{ github.sha }}
             type=raw,priority=150,value=${{ github.run_id }}-${{ github.run_attempt }}
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
             type=ref,event=branch
             type=ref,event=pr
             type=ref,event=tag
@@ -53,5 +56,5 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           provenance: false
-          cache-from: type=registry,ref=ghcr.io/cageyv/${{ github.repository }}:latest
+          cache-from: type=registry,ref=ghcr.io/cageyv/velociraptor:latest
           cache-to: type=inline,mode=max

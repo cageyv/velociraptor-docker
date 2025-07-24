@@ -4,7 +4,7 @@ Run [Velocidex Velociraptor](https://github.com/Velocidex/velociraptor) server w
 #### Install
 
 - Ensure [docker-compose](https://docs.docker.com/compose/install/) is installed on the host
-- `git clone https://github.com/weslambert/velociraptor-docker`
+- `git clone https://github.com/cageyv/velociraptor-docker`
 - `cd velociraptor-docker`
 - Change credential values in `.env` as desired
 - `docker-compose up` (or `docker-compose up -d` for detached)
@@ -23,8 +23,8 @@ Once started, edit `server.config.yaml` in `/velociraptor`, then run `docker-com
 #### Docker image
 To pull only the Docker image:
 
-`docker pull wlambert/velociraptor`
+`docker pull ghcr.io/cageyv/velociraptor`
 
 To pull a specific version of the Docker image:
 
-`docker pull wlambert/velociraptor:0.73.4`
+`docker pull ghcr.io/cageyv/velociraptor:0.74.2`
