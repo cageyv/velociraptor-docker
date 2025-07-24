@@ -1,0 +1,52 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v3
+      with:
+        registry: ghcr.io
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+
+    - name: Docker meta
+      id: meta
+      uses: docker/metadata-action@v5
+      with:
+        images: ghcr.io/cageyv/${{ github.repository }}
+        tags: |
+          type=raw,priority=100,value=${{ github.sha }}
+          type=raw,priority=150,value=${{ github.run_id }}-${{ github.run_attempt }}
+          type=ref,event=branch
+          type=ref,event=pr
+          type=raw,value=latest
+        labels: |
+          org.opencontainers.image.revision=${{ github.sha }}
+
+    - name: Build and Push
+      uses: docker/build-push-action@v5
+      with:
+        context: .
+        file: Dockerfile
+        platforms: linux/amd64
+        pull: true
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: ${{ steps.meta.outputs.labels }}
+        provenance: false
+        cache-from: type=registry,ref=ghcr.io/cageyv/${{ github.repository }}/${{ inputs.image_name }}:latest
+        cache-to: type=inline,mode=max 
