@@ -1,11 +1,7 @@
-version: '2'
 services:
   velociraptor:
     container_name: velociraptor
-    image: wlambert/velociraptor
-    #build:
-    #  context: ./
-    #  dockerfile: Dockerfile
+    image: ghcr.io/cageyv/velociraptor
     volumes:
       - ./velociraptor:/velociraptor/:rw
     environment:

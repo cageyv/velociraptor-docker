@@ -1,9 +1,9 @@
 FROM ubuntu:22.04
 LABEL version="Velociraptor v0.74.2"
 LABEL description="Velociraptor server in a Docker container"
-LABEL maintainer="Wes Lambert, @therealwlambert"
-COPY ./entrypoint .
-RUN chmod +x entrypoint && \
+WORKDIR /
+COPY ./entrypoint /entrypoint
+RUN chmod +x /entrypoint && \
     apt-get update && \
     apt-get install -y curl wget jq rsync && \
     # Create dirs for Velo binaries
